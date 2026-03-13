@@ -19,7 +19,7 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <img src={logoPaw} alt="PawHome" className="h-9 w-9" />
+          <img src={logoPaw} alt="PawConnect" className="h-9 w-9" />
           <span className="font-heading text-xl font-bold text-foreground">
             Paw<span className="text-primary">Connect</span>
           </span>

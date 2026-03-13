@@ -49,7 +49,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t pt-8 text-sm text-muted-foreground md:flex-row">
-          <p>© 2024 PawHome. All rights reserved.</p>
+          <p>© 2024 PawConnect. All rights reserved.</p>
           <p className="flex items-center gap-1">
             Made with <Heart className="h-4 w-4 fill-primary text-primary" /> for pets everywhere
           </p>
