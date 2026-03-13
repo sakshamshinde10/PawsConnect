@@ -21,7 +21,7 @@ export function Header() {
         <Link to="/" className="flex items-center gap-2">
           <img src={logoPaw} alt="PawHome" className="h-9 w-9" />
           <span className="font-heading text-xl font-bold text-foreground">
-            Paw<span className="text-primary">Home</span>
+            Paw<span className="text-primary">Connect</span>
           </span>
         </Link>
 
