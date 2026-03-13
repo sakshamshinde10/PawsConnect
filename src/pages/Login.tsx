@@ -18,7 +18,7 @@ const Login = () => {
             <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
               <PawPrint className="h-6 w-6 text-primary" />
             </div>
-            <CardTitle className="font-heading text-2xl">Welcome to PawHome</CardTitle>
+            <CardTitle className="font-heading text-2xl">Welcome to PawConnect</CardTitle>
             <CardDescription>Sign in to adopt or list pets</CardDescription>
           </CardHeader>
           <CardContent>
