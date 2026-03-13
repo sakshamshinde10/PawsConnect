@@ -9,9 +9,9 @@ export function Footer() {
         <div className="grid gap-8 md:grid-cols-4">
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2">
-              <img src={logoPaw} alt="PawHome" className="h-8 w-8" />
+              <img src={logoPaw} alt="PawConnect" className="h-8 w-8" />
               <span className="font-heading text-lg font-bold">
-                Paw<span className="text-primary">Home</span>
+                Paw<span className="text-primary">Connect</span>
               </span>
             </Link>
             <p className="text-sm text-muted-foreground">
@@ -49,7 +49,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t pt-8 text-sm text-muted-foreground md:flex-row">
-          <p>© 2024 PawHome. All rights reserved.</p>
+          <p>© 2024 PawConnect. All rights reserved.</p>
           <p className="flex items-center gap-1">
             Made with <Heart className="h-4 w-4 fill-primary text-primary" /> for pets everywhere
           </p>
