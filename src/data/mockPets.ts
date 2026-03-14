@@ -49,7 +49,7 @@ export const mockPets: Pet[] = [
     age: "1 year",
     gender: "female",
     vaccinated: true,
-    price: 150,
+    price: 12500,
     location: "Los Angeles, CA",
     description: "Whiskers is a gorgeous Persian cat with beautiful blue eyes. She's very calm, loves to cuddle, and is perfect for apartment living. She's litter trained and great with children.",
     images: [
