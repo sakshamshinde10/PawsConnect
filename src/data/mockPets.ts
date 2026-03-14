@@ -134,7 +134,7 @@ export const mockPets: Pet[] = [
     age: "8 months",
     gender: "female",
     vaccinated: true,
-    price: 50,
+    price: 4150,
     location: "Portland, OR",
     description: "Bun Bun is an adorable Holland Lop rabbit with floppy ears. She's gentle and loves being petted. Great starter pet for families.",
     images: [
