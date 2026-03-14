@@ -29,10 +29,12 @@ const Pets = () => {
     <div className="flex min-h-screen flex-col">
       <Header />
       <main className="flex-1">
-        <div className="container py-8">
-          <div className="mb-6">
-            <h1 className="font-heading text-3xl font-bold">Find Your Pet</h1>
-            <p className="text-muted-foreground">
+        <div className="container py-10">
+          <div className="mb-8">
+            <h1 className="font-heading text-4xl font-bold">
+              Find Your <span className="text-gradient-warm">Pet</span>
+            </h1>
+            <p className="mt-2 text-muted-foreground text-lg">
               {filtered.length} adorable pets waiting for you
             </p>
           </div>
@@ -47,17 +49,19 @@ const Pets = () => {
             activePrice={filterPrice}
           />
 
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filtered.map((pet) => (
-              <PetCard key={pet.id} pet={pet} />
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {filtered.map((pet, i) => (
+              <div key={pet.id} style={{ animation: `fade-in 0.4s ease-out ${i * 0.05}s both` }}>
+                <PetCard pet={pet} />
+              </div>
             ))}
           </div>
 
           {filtered.length === 0 && (
-            <div className="py-20 text-center">
-              <p className="text-4xl">🐾</p>
-              <h3 className="mt-4 font-heading text-xl font-bold">No pets found</h3>
-              <p className="text-muted-foreground">Try adjusting your filters</p>
+            <div className="py-24 text-center animate-in">
+              <p className="text-6xl mb-4">🐾</p>
+              <h3 className="font-heading text-2xl font-bold">No pets found</h3>
+              <p className="text-muted-foreground mt-2">Try adjusting your filters</p>
             </div>
           )}
         </div>
