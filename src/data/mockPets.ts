@@ -71,7 +71,7 @@ export const mockPets: Pet[] = [
     age: "3 years",
     gender: "male",
     vaccinated: true,
-    price: 200,
+    price: 16500,
     location: "New York, NY",
     description: "Rocky is a well-trained German Shepherd who is loyal, protective, and incredibly smart. He knows basic commands and is house-trained. He needs an active family with a yard.",
     images: [
