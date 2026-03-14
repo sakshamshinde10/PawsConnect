@@ -18,9 +18,9 @@ const Pets = () => {
       if (filterType && pet.type !== filterType) return false;
       if (filterLocation && filterLocation !== "all" && pet.location !== filterLocation) return false;
       if (filterPrice === "free" && pet.price !== 0) return false;
-      if (filterPrice === "under100" && pet.price >= 100) return false;
-      if (filterPrice === "under300" && pet.price >= 300) return false;
-      if (filterPrice === "over300" && pet.price < 300) return false;
+      if (filterPrice === "under100" && pet.price >= 8000) return false;
+      if (filterPrice === "under300" && pet.price >= 25000) return false;
+      if (filterPrice === "over300" && pet.price < 25000) return false;
       return true;
     });
   }, [search, filterType, filterLocation, filterPrice]);

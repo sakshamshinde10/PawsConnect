@@ -49,7 +49,7 @@ export const mockPets: Pet[] = [
     age: "1 year",
     gender: "female",
     vaccinated: true,
-    price: 150,
+    price: 12500,
     location: "Los Angeles, CA",
     description: "Whiskers is a gorgeous Persian cat with beautiful blue eyes. She's very calm, loves to cuddle, and is perfect for apartment living. She's litter trained and great with children.",
     images: [
@@ -71,7 +71,7 @@ export const mockPets: Pet[] = [
     age: "3 years",
     gender: "male",
     vaccinated: true,
-    price: 200,
+    price: 16500,
     location: "New York, NY",
     description: "Rocky is a well-trained German Shepherd who is loyal, protective, and incredibly smart. He knows basic commands and is house-trained. He needs an active family with a yard.",
     images: [
@@ -92,7 +92,7 @@ export const mockPets: Pet[] = [
     age: "6 months",
     gender: "male",
     vaccinated: false,
-    price: 75,
+    price: 6250,
     location: "Chicago, IL",
     description: "Tweety is a playful Cockatiel who loves to whistle and sing. He's hand-tamed and very social. Comes with cage and accessories.",
     images: [
@@ -134,7 +134,7 @@ export const mockPets: Pet[] = [
     age: "8 months",
     gender: "female",
     vaccinated: true,
-    price: 50,
+    price: 4150,
     location: "Portland, OR",
     description: "Bun Bun is an adorable Holland Lop rabbit with floppy ears. She's gentle and loves being petted. Great starter pet for families.",
     images: [
@@ -176,7 +176,7 @@ export const mockPets: Pet[] = [
     age: "2 years",
     gender: "female",
     vaccinated: true,
-    price: 300,
+    price: 25000,
     location: "Denver, CO",
     description: "Luna is a majestic Maine Coon with a stunning coat. She's independent but loves evening cuddles. Great with other cats.",
     images: [

@@ -86,7 +86,7 @@ const ListPet = () => {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="price">Price / Adoption Fee ($)</Label>
+                  <Label htmlFor="price">Price / Adoption Fee (₹)</Label>
                   <Input id="price" type="number" placeholder="0 for free adoption" className="h-11 rounded-xl" />
                 </div>
               </div>
