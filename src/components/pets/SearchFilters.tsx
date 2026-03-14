@@ -4,14 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { petTypes, locations } from "@/data/mockPets";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface SearchFiltersProps {
   onSearch: (query: string) => void;
   onFilterType: (type: string) => void;
+  onFilterBreed: (breed: string) => void;
   onFilterLocation: (location: string) => void;
   onFilterPrice: (price: string) => void;
   activeType: string;
+  activeBreed: string;
   activeLocation: string;
   activePrice: string;
 }
@@ -19,22 +21,22 @@ interface SearchFiltersProps {
 const petTypeLabels: Record<string, string> = {
   dog: "🐕 Dogs",
   cat: "🐈 Cats",
-  bird: "🐦 Birds",
-  rabbit: "🐇 Rabbits",
-  other: "🐾 Other",
+  other: "🐾 Other Pets",
 };
 
 export function SearchFilters({
   onSearch,
   onFilterType,
+  onFilterBreed,
   onFilterLocation,
   onFilterPrice,
   activeType,
+  activeBreed,
   activeLocation,
   activePrice,
 }: SearchFiltersProps) {
   const [showFilters, setShowFilters] = useState(false);
-  const hasFilters = activeType || activeLocation || activePrice;
+  const hasFilters = activeType || activeBreed || activeLocation || activePrice;
 
   return (
     <div className="space-y-4">
@@ -83,6 +85,7 @@ export function SearchFilters({
         ))}
       </div>
 
+
       {/* Expanded Filters */}
       {showFilters && (
         <div className="flex flex-wrap gap-3 rounded-2xl glass p-5 shadow-card animate-in">
@@ -118,6 +121,7 @@ export function SearchFilters({
               className="rounded-xl text-destructive hover:bg-destructive/10"
               onClick={() => {
                 onFilterType("");
+                onFilterBreed("");
                 onFilterLocation("all");
                 onFilterPrice("all");
               }}

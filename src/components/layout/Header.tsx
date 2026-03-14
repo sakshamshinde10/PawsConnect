@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Heart, Menu, Search, User, X } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Heart, Menu, Search, User, X, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import logoPaw from "@/assets/logo-paw.png";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navLinks = [
   { to: "/", label: "Home" },
@@ -13,6 +15,13 @@ const navLinks = [
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, profile, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   return (
     <header className="sticky top-0 z-50 glass shadow-sm">
@@ -53,16 +62,42 @@ export function Header() {
             </Link>
           </Button>
           <Button variant="ghost" size="icon" className="rounded-xl hover:bg-primary/10" asChild>
-            <Link to="/search">
+            <Link to="/pets">
               <Search className="h-5 w-5" />
             </Link>
           </Button>
-          <Button className="rounded-xl bg-gradient-warm hover:opacity-90 transition-opacity border-0 shadow-glow" asChild>
-            <Link to="/login">
-              <User className="h-4 w-4" />
-              Sign In
-            </Link>
-          </Button>
+
+          {user ? (
+            <div className="flex items-center gap-3 ml-2">
+              <Link to="/dashboard" className="flex items-center gap-2 px-3 py-1.5 rounded-xl glass border border-white/20 hover:shadow-card transition-shadow">
+                <Avatar className="h-7 w-7 ring-2 ring-primary/20">
+                  <AvatarImage src={profile?.avatar_url || ""} />
+                  <AvatarFallback className="bg-gradient-warm text-primary-foreground text-xs font-bold">
+                    {(profile?.full_name?.[0] || user.email?.[0] || "U").toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="text-sm font-medium truncate max-w-[120px]">
+                  {profile?.full_name || user.email?.split("@")[0]}
+                </span>
+              </Link>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-xl hover:bg-destructive/10 hover:text-destructive"
+                onClick={handleSignOut}
+                title="Sign Out"
+              >
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </div>
+          ) : (
+            <Button className="rounded-xl bg-gradient-warm hover:opacity-90 transition-opacity border-0 shadow-glow" asChild>
+              <Link to="/login">
+                <User className="h-4 w-4" />
+                Sign In
+              </Link>
+            </Button>
+          )}
         </div>
 
         {/* Mobile Toggle */}
@@ -94,18 +129,50 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
-            <div className="mt-3 flex gap-2">
-              <Button variant="outline" className="flex-1 rounded-xl" asChild>
-                <Link to="/favorites" onClick={() => setMobileOpen(false)}>
-                  <Heart className="h-4 w-4" /> Favorites
-                </Link>
-              </Button>
-              <Button className="flex-1 rounded-xl bg-gradient-warm border-0" asChild>
-                <Link to="/login" onClick={() => setMobileOpen(false)}>
-                  <User className="h-4 w-4" /> Sign In
-                </Link>
-              </Button>
-            </div>
+
+            {user ? (
+              <div className="mt-3 space-y-3">
+                <div className="flex items-center gap-3 px-4 py-3 rounded-xl glass">
+                  <Avatar className="h-9 w-9 ring-2 ring-primary/20">
+                    <AvatarImage src={profile?.avatar_url || ""} />
+                    <AvatarFallback className="bg-gradient-warm text-primary-foreground text-sm font-bold">
+                      {(profile?.full_name?.[0] || user.email?.[0] || "U").toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-sm truncate">{profile?.full_name || "User"}</p>
+                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" className="flex-1 rounded-xl" asChild>
+                    <Link to="/favorites" onClick={() => setMobileOpen(false)}>
+                      <Heart className="h-4 w-4" /> Favorites
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="flex-1 rounded-xl text-destructive border-destructive/30 hover:bg-destructive/10"
+                    onClick={() => { handleSignOut(); setMobileOpen(false); }}
+                  >
+                    <LogOut className="h-4 w-4" /> Sign Out
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-3 flex gap-2">
+                <Button variant="outline" className="flex-1 rounded-xl" asChild>
+                  <Link to="/favorites" onClick={() => setMobileOpen(false)}>
+                    <Heart className="h-4 w-4" /> Favorites
+                  </Link>
+                </Button>
+                <Button className="flex-1 rounded-xl bg-gradient-warm border-0" asChild>
+                  <Link to="/login" onClick={() => setMobileOpen(false)}>
+                    <User className="h-4 w-4" /> Sign In
+                  </Link>
+                </Button>
+              </div>
+            )}
           </nav>
         </div>
       )}

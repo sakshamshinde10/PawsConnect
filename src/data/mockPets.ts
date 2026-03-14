@@ -1,7 +1,7 @@
 export interface Pet {
   id: string;
   name: string;
-  type: "dog" | "cat" | "bird" | "rabbit" | "other";
+  type: "dog" | "cat" | "other";
   breed: string;
   age: string;
   gender: "male" | "female";
@@ -15,6 +15,7 @@ export interface Pet {
   ownerAvatar: string;
   isLive: boolean;
   isFeatured: boolean;
+  videoUrl?: string | null;
   createdAt: string;
 }
 
@@ -87,8 +88,8 @@ export const mockPets: Pet[] = [
   {
     id: "4",
     name: "Tweety",
-    type: "bird",
-    breed: "Cockatiel",
+    type: "other",
+    breed: "Parrot",
     age: "6 months",
     gender: "male",
     vaccinated: false,
@@ -126,27 +127,7 @@ export const mockPets: Pet[] = [
     isFeatured: true,
     createdAt: "2024-03-12",
   },
-  {
-    id: "6",
-    name: "Bun Bun",
-    type: "rabbit",
-    breed: "Holland Lop",
-    age: "8 months",
-    gender: "female",
-    vaccinated: true,
-    price: 4150,
-    location: "Portland, OR",
-    description: "Bun Bun is an adorable Holland Lop rabbit with floppy ears. She's gentle and loves being petted. Great starter pet for families.",
-    images: [
-      "https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=600",
-    ],
-    ownerId: "u1",
-    ownerName: "Sarah Johnson",
-    ownerAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100",
-    isLive: false,
-    isFeatured: false,
-    createdAt: "2024-03-14",
-  },
+
   {
     id: "7",
     name: "Max",
@@ -191,5 +172,5 @@ export const mockPets: Pet[] = [
   },
 ];
 
-export const petTypes = ["dog", "cat", "bird", "rabbit", "other"] as const;
+export const petTypes = ["dog", "cat", "other"] as const;
 export const locations = ["San Francisco, CA", "Los Angeles, CA", "New York, NY", "Chicago, IL", "Austin, TX", "Portland, OR", "Seattle, WA", "Denver, CO"];
