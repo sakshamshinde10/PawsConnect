@@ -111,7 +111,7 @@ const PetDetail = () => {
                   </div>
                 </div>
                 <p className="mt-2 font-heading text-3xl font-bold text-gradient-warm">
-                  {pet.price === 0 ? "Free Adoption" : `$${pet.price}`}
+                  {pet.price === 0 ? "Free Adoption" : `₹${pet.price.toLocaleString("en-IN")}`}
                 </p>
               </div>
 

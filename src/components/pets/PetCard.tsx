@@ -75,7 +75,7 @@ export function PetCard({ pet }: PetCardProps) {
             <span>{pet.age}</span>
           </div>
           <span className="font-heading text-lg font-bold text-gradient-warm">
-            {pet.price === 0 ? "Free" : `$${pet.price}`}
+            {pet.price === 0 ? "Free" : `₹${pet.price.toLocaleString("en-IN")}`}
           </span>
         </div>
 

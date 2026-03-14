@@ -176,7 +176,7 @@ export const mockPets: Pet[] = [
     age: "2 years",
     gender: "female",
     vaccinated: true,
-    price: 300,
+    price: 25000,
     location: "Denver, CO",
     description: "Luna is a majestic Maine Coon with a stunning coat. She's independent but loves evening cuddles. Great with other cats.",
     images: [

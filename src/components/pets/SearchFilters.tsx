@@ -105,9 +105,9 @@ export function SearchFilters({
             <SelectContent>
               <SelectItem value="all">Any Price</SelectItem>
               <SelectItem value="free">Free Adoption</SelectItem>
-              <SelectItem value="under100">Under $100</SelectItem>
-              <SelectItem value="under300">Under $300</SelectItem>
-              <SelectItem value="over300">$300+</SelectItem>
+              <SelectItem value="under100">Under ₹8,000</SelectItem>
+              <SelectItem value="under300">Under ₹25,000</SelectItem>
+              <SelectItem value="over300">₹25,000+</SelectItem>
             </SelectContent>
           </Select>
 
