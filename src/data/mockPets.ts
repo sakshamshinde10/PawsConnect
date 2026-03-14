@@ -92,7 +92,7 @@ export const mockPets: Pet[] = [
     age: "6 months",
     gender: "male",
     vaccinated: false,
-    price: 75,
+    price: 6250,
     location: "Chicago, IL",
     description: "Tweety is a playful Cockatiel who loves to whistle and sing. He's hand-tamed and very social. Comes with cage and accessories.",
     images: [
