@@ -11,9 +11,11 @@ import Login from "./pages/Login";
 import ListPet from "./pages/ListPet";
 import Favorites from "./pages/Favorites";
 import Chat from "./pages/Chat";
+import Inbox from "./pages/Inbox";
 import Dashboard from "./pages/Dashboard";
 import InfoPage from "./pages/InfoPage";
 import NotFound from "./pages/NotFound";
+import Featured from "./pages/Featured";
 
 const queryClient = new QueryClient();
 
@@ -27,11 +29,14 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/pets" element={<Pets />} />
+            <Route path="/available-pets" element={<Pets />} />
+            <Route path="/featured" element={<Featured />} />
             <Route path="/pet/:id" element={<PetDetail />} />
             <Route path="/login" element={<Login />} />
             <Route path="/list-pet" element={<ListPet />} />
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/chat/:petId" element={<Chat />} />
+            <Route path="/inbox" element={<Inbox />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/about" element={<InfoPage title="About Us" subtitle="PawConnect was founded in 2024 to connect loving families with perfect, furry companions. We believe every pet deserves a safe, loving forever home." />} />
             <Route path="/contact" element={<InfoPage title="Contact Support" subtitle="Need help finding a pet or listing an adoption? Reach out to us at support@pawconnect.online and our trusted support herd will assist you within 24 hours." />} />

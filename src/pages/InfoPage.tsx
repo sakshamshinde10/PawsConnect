@@ -12,23 +12,23 @@ const InfoPage = ({ title, subtitle }: InfoPageProps) => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 flex flex-col items-center justify-center p-6 bg-gradient-hero relative overflow-hidden">
+      <main className="flex-1 flex flex-col items-center justify-center p-6 bg-gray-50 relative overflow-hidden">
         {/* Soft floating blob background */}
-        <div className="absolute top-1/4 -left-20 h-72 w-72 bg-primary/10 blur-3xl rounded-full" style={{ animation: "blob 8s ease-in-out infinite" }} />
-        <div className="absolute bottom-1/4 -right-20 h-72 w-72 bg-accent/10 blur-3xl rounded-full" style={{ animation: "blob 10s ease-in-out infinite reverse" }} />
+        <div className="absolute top-1/4 -left-20 h-72 w-72 bg-secondary/30 blur-3xl rounded-full" style={{ animation: "blob 8s ease-in-out infinite" }} />
+        <div className="absolute bottom-1/4 -right-20 h-72 w-72 bg-primary/5 blur-3xl rounded-full" style={{ animation: "blob 10s ease-in-out infinite reverse" }} />
 
-        <div className="max-w-3xl w-full text-center space-y-6 bg-card/80 backdrop-blur-xl p-10 md:p-16 rounded-3xl shadow-card glass border border-white/20 animate-in fade-in slide-in-from-bottom-4 relative z-10">
-          <h1 className="font-heading text-4xl md:text-5xl font-bold">
+        <div className="max-w-3xl w-full text-center space-y-6 bg-white p-10 md:p-16 rounded-[40px] shadow-sm border border-gray-100 animate-in fade-in slide-in-from-bottom-4 relative z-10">
+          <h1 className="font-heading text-4xl md:text-5xl font-extrabold text-primary">
             {title.split(' ').map((word, i) => 
-               i === title.split(' ').length - 1 ? <span key={i} className="text-gradient-warm">{word}</span> : word + " "
+               i === title.split(' ').length - 1 ? <span key={i} className="text-accent">{word}</span> : word + " "
             )}
           </h1>
-          <div className="h-1 w-20 bg-primary/20 mx-auto rounded-full my-6"></div>
+          <div className="h-1.5 w-20 bg-secondary mx-auto rounded-full my-6"></div>
           <p className="text-muted-foreground text-lg md:text-xl leading-relaxed whitespace-pre-wrap">
             {subtitle}
           </p>
-          <div className="pt-8 mt-8 border-t border-border/50">
-             <Button className="h-14 rounded-2xl bg-gradient-warm hover:opacity-90 transition-opacity border-0 shadow-glow text-base font-heading font-bold px-10" asChild>
+          <div className="pt-8 mt-8 border-t border-gray-100">
+             <Button className="h-14 rounded-full bg-primary hover:bg-primary/90 text-white transition-opacity border-0 shadow-sm text-base font-semibold px-10" asChild>
               <Link to="/pets">
                 Explore Available Pets
               </Link>

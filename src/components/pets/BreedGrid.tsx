@@ -204,7 +204,7 @@ function BreedCard({ breed, apiId, type, imageId, delay, onClick }: { breed: str
   return (
     <Card
       ref={cardRef}
-      className="overflow-hidden cursor-pointer group hover:shadow-glow transition-all duration-300 border-0 shadow-sm glass border-white/20"
+      className="overflow-hidden cursor-pointer group hover:shadow-md transition-all duration-300 rounded-3xl bg-white border border-gray-100 shadow-sm"
       style={{ animationDelay: `${Math.min(delay, 1000)}ms` }}
       onClick={onClick}
     >
@@ -223,8 +223,8 @@ function BreedCard({ breed, apiId, type, imageId, delay, onClick }: { breed: str
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
-      <CardContent className="p-3 text-center bg-white/50 backdrop-blur-md">
-        <h3 className="font-heading font-semibold text-sm truncate" title={breed}>{breed}</h3>
+      <CardContent className="p-3 text-center bg-white border-t border-gray-50">
+        <h3 className="font-heading font-semibold text-sm truncate text-primary" title={breed}>{breed}</h3>
       </CardContent>
     </Card>
   );

@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Heart, MapPin, MessageCircle, Share2, Video, PawPrint, CalendarDays, Activity, ShieldCheck, Loader2 } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -9,9 +9,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { mockPets, type Pet } from "@/data/mockPets";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 
 const PetDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [liked, setLiked] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
   const [pet, setPet] = useState<Pet | null>(null);
@@ -98,7 +101,7 @@ const PetDetail = () => {
           <div className="text-center animate-in">
             <p className="text-7xl">🐾</p>
             <h1 className="mt-4 font-heading text-2xl font-bold">Pet Not Found</h1>
-            <Button className="mt-4 rounded-xl bg-gradient-warm border-0" asChild>
+            <Button className="mt-4 rounded-full bg-primary hover:bg-primary/90 text-white border-0 shadow-sm" asChild>
               <Link to="/pets">Browse Pets</Link>
             </Button>
           </div>
@@ -120,18 +123,18 @@ const PetDetail = () => {
             </Link>
           </Button>
 
-          <div className="grid gap-8 lg:grid-cols-5">
+          <div className="grid gap-8 lg:grid-cols-5 bg-white rounded-[40px] p-6 sm:p-10 border border-gray-100 shadow-sm mt-8">
             {/* Images */}
             <div className="lg:col-span-3 space-y-4 animate-in">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-card-hover">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-sm border border-gray-100">
                 <img
                   src={pet.images[selectedImage]}
                   alt={pet.name}
-                  className="h-full w-full object-cover transition-transform duration-500"
+                  className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
                 />
                 {pet.isLive && (
-                  <Badge className="absolute left-4 top-4 bg-destructive/90 backdrop-blur-sm text-destructive-foreground animate-pulse-soft shadow-lg">
-                    <Video className="mr-1 h-3 w-3" /> Live Now
+                  <Badge className="absolute left-4 top-4 bg-destructive text-white animate-pulse-soft shadow-sm border-0 px-3 py-1.5">
+                    <Video className="mr-1 h-4 w-4" /> Live Now
                   </Badge>
                 )}
               </div>
@@ -143,7 +146,7 @@ const PetDetail = () => {
                       onClick={() => setSelectedImage(i)}
                       className={`relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl transition-all duration-300 ${
                         selectedImage === i 
-                          ? "ring-2 ring-primary ring-offset-2 ring-offset-background shadow-glow scale-100" 
+                          ? "ring-2 ring-primary ring-offset-2 ring-offset-background shadow-sm scale-100" 
                           : "opacity-60 hover:opacity-100 hover:scale-105"
                       }`}
                     >
@@ -166,7 +169,7 @@ const PetDetail = () => {
                     />
                   </div>
                   <CardContent className="flex items-center gap-4 p-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-warm shadow-glow">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-sm">
                       <Video className="h-5 w-5 text-primary-foreground" />
                     </div>
                     <div className="flex-1">
@@ -195,7 +198,7 @@ const PetDetail = () => {
                   </div>
                   <div className="flex gap-2">
                     <Button variant="outline" size="icon" className="h-12 w-12 rounded-full hover:bg-primary/10 hover:border-primary/30 transition-all shadow-sm" onClick={() => setLiked(!liked)}>
-                      <Heart className={`h-6 w-6 transition-all ${liked ? "fill-primary text-primary scale-110 shadow-glow" : "text-muted-foreground"}`} />
+                      <Heart className={`h-6 w-6 transition-all ${liked ? "fill-primary text-primary scale-110 drop-shadow-sm" : "text-muted-foreground"}`} />
                     </Button>
                     <Button variant="outline" size="icon" className="h-12 w-12 rounded-full hover:bg-primary/10 hover:border-primary/30 transition-all shadow-sm">
                       <Share2 className="h-5 w-5 text-muted-foreground" />
@@ -219,14 +222,14 @@ const PetDetail = () => {
                   { label: "Gender", value: pet.gender, icon: <Activity className="h-5 w-5 text-purple-500" />, bg: "bg-purple-500/10" },
                   { label: "Vaccinated", value: pet.vaccinated ? "Yes ✓" : "No", icon: <ShieldCheck className="h-5 w-5 text-amber-500" />, bg: "bg-amber-500/10" },
                 ].map((item) => (
-                  <div key={item.label} className="rounded-2xl glass p-5 transition-all duration-300 hover:shadow-card hover:-translate-y-1 group border border-white/40">
+                  <div key={item.label} className="rounded-3xl bg-gray-50 border border-gray-100 p-5 transition-all duration-300 hover:shadow-sm hover:-translate-y-1 group">
                     <div className="flex items-center gap-3 mb-2">
-                      <div className={`p-2.5 rounded-xl ${item.bg} group-hover:scale-110 transition-transform`}>
+                      <div className={`p-2.5 rounded-2xl ${item.bg} group-hover:scale-110 transition-transform`}>
                         {item.icon}
                       </div>
-                      <p className="text-sm font-medium text-muted-foreground">{item.label}</p>
+                      <p className="text-sm font-semibold text-muted-foreground">{item.label}</p>
                     </div>
-                    <p className="font-heading text-lg font-bold capitalize pl-1">{item.value}</p>
+                    <p className="font-heading text-xl font-bold capitalize pl-1 text-primary">{item.value}</p>
                   </div>
                 ))}
               </div>
@@ -239,43 +242,60 @@ const PetDetail = () => {
                 </div>
               )}
 
-              <div className="glass p-6 rounded-3xl border border-white/40 shadow-sm relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl transform translate-x-10 -translate-y-10"></div>
-                <h3 className="mb-3 font-heading text-2xl font-bold flex items-center gap-2">
+              <div className="bg-gray-50 p-8 rounded-3xl border border-gray-100 shadow-sm relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-secondary rounded-full blur-3xl transform translate-x-10 -translate-y-10"></div>
+                <h3 className="mb-4 font-heading text-2xl font-extrabold flex items-center gap-2 text-primary">
                   About {pet.name}
                 </h3>
-                <p className="text-base leading-relaxed text-muted-foreground relative z-10">{pet.description}</p>
+                <p className="text-lg leading-relaxed text-muted-foreground relative z-10">{pet.description}</p>
               </div>
 
               {/* Owner */}
-              <Card className="rounded-3xl glass shadow-sm border border-white/40 hover:shadow-card transition-shadow duration-300">
-                <CardContent className="flex items-center gap-5 p-5">
-                  <Avatar className="h-16 w-16 ring-4 ring-primary/10 ring-offset-2 ring-offset-background">
+              <Card className="rounded-3xl bg-white shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <CardContent className="flex items-center gap-5 p-6">
+                  <Avatar className="h-16 w-16 ring-4 ring-secondary ring-offset-2 ring-offset-background">
                     <AvatarImage src={pet.ownerAvatar} />
-                    <AvatarFallback className="bg-gradient-warm text-primary-foreground font-bold text-xl">{pet.ownerName[0]}</AvatarFallback>
+                    <AvatarFallback className="bg-primary text-white font-bold text-xl">{pet.ownerName[0]}</AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
-                    <p className="font-heading font-bold text-xl">{pet.ownerName}</p>
-                    <p className="text-sm font-medium text-primary flex items-center gap-1 mt-0.5">
-                      <ShieldCheck className="h-3.5 w-3.5" /> Verified Pet Owner
+                    <p className="font-heading font-extrabold text-xl text-primary">{pet.ownerName}</p>
+                    <p className="text-sm font-semibold text-accent flex items-center gap-1 mt-1">
+                      <ShieldCheck className="h-4 w-4" /> Verified Pet Owner
                     </p>
                   </div>
                 </CardContent>
               </Card>
 
-              {/* Actions */}
-              <div className="flex gap-3 pt-2 pb-6 mt-auto">
-                <Button className="flex-1 h-14 rounded-2xl bg-gradient-warm hover:opacity-90 transition-all hover:-translate-y-1 border-0 shadow-glow text-lg font-heading font-bold overflow-hidden relative group">
-                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
-                  <Heart className="h-5 w-5 mr-2 animate-pulse-soft" /> Adopt {pet.name}
-                </Button>
-                <Button variant="outline" size="lg" className="h-14 w-14 md:w-auto md:px-8 rounded-2xl glass hover:shadow-card text-base font-semibold group border-primary/20 hover:border-primary/50 text-primary" asChild>
-                  <Link to={`/chat/${pet.id}?owner=${pet.ownerId}&pet=${encodeURIComponent(pet.name)}`}>
-                    <MessageCircle className="h-5 w-5 md:mr-2 group-hover:scale-110 transition-transform duration-300" /> 
-                    <span className="hidden md:inline">Message</span>
-                  </Link>
-                </Button>
-              </div>
+              {user?.id !== pet.ownerId && (
+                <div className="flex gap-4 pt-4 pb-6 mt-auto">
+                  <Button 
+                    className="flex-1 h-14 rounded-full bg-primary hover:bg-primary/90 transition-all hover:-translate-y-1 border-0 shadow-sm text-lg font-heading font-bold overflow-hidden relative group text-white"
+                    onClick={() => {
+                      if (!user) navigate("/login");
+                      else navigate(`/chat/${pet.id}?owner=${pet.ownerId}&pet=${encodeURIComponent(pet.name)}`);
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+                    <Heart className="h-5 w-5 mr-2 animate-pulse-soft" /> Adopt {pet.name}
+                  </Button>
+                  
+                  {user ? (
+                    <Button variant="outline" size="lg" className="h-14 w-14 md:w-auto md:px-8 rounded-full bg-white hover:bg-gray-50 border-gray-200 shadow-sm hover:shadow-md text-base font-semibold group text-primary transition-all" asChild>
+                      <Link to={`/chat/${pet.id}?owner=${pet.ownerId}&pet=${encodeURIComponent(pet.name)}`}>
+                        <MessageCircle className="h-5 w-5 md:mr-2 group-hover:scale-110 transition-transform duration-300" /> 
+                        <span className="hidden md:inline">Message</span>
+                      </Link>
+                    </Button>
+                  ) : (
+                    <Button variant="outline" size="lg" className="h-14 w-14 md:w-auto md:px-8 rounded-full bg-white hover:bg-gray-50 border-gray-200 shadow-sm hover:shadow-md text-base font-semibold group text-primary transition-all" asChild>
+                      <Link to="/login">
+                        <MessageCircle className="h-5 w-5 md:mr-2 group-hover:scale-110 transition-transform duration-300" /> 
+                        <span className="hidden md:inline">Sign In To Message</span>
+                      </Link>
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -43,20 +43,20 @@ export function SearchFilters({
       {/* Search Bar */}
       <div className="flex gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="absolute left-5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Search by pet name, breed..."
-            className="pl-11 h-12 rounded-xl glass text-base"
+            className="pl-12 h-14 rounded-full bg-white border border-gray-100 shadow-sm text-base focus-visible:ring-1 focus-visible:ring-primary/30"
             onChange={(e) => onSearch(e.target.value)}
           />
         </div>
         <Button
           variant="outline"
           onClick={() => setShowFilters(!showFilters)}
-          className={`h-12 rounded-xl px-5 transition-all ${showFilters ? "bg-primary/10 text-primary border-primary/20" : ""}`}
+          className={`h-14 rounded-full px-6 transition-all border-gray-200 shadow-sm ${showFilters ? "bg-secondary text-primary border-primary/20" : "bg-white hover:bg-gray-50"}`}
         >
-          <SlidersHorizontal className="h-4 w-4" />
-          <span className="hidden sm:inline">Filters</span>
+          <SlidersHorizontal className="h-[18px] w-[18px] mr-2" />
+          <span className="hidden sm:inline font-semibold">Filters</span>
         </Button>
       </div>
 
@@ -64,8 +64,8 @@ export function SearchFilters({
       <div className="flex flex-wrap gap-2">
         <Badge
           variant={activeType === "" ? "default" : "outline"}
-          className={`cursor-pointer px-4 py-2 text-sm transition-all duration-300 rounded-xl ${
-            activeType === "" ? "bg-gradient-warm border-0 text-primary-foreground shadow-glow" : "hover:border-primary/50"
+          className={`cursor-pointer px-5 py-2.5 text-[15px] font-semibold transition-all duration-300 rounded-full ${
+            activeType === "" ? "bg-primary border-0 text-white shadow-sm" : "bg-white border-gray-200 hover:border-primary/50 text-muted-foreground"
           }`}
           onClick={() => onFilterType("")}
         >
@@ -75,8 +75,8 @@ export function SearchFilters({
           <Badge
             key={type}
             variant={activeType === type ? "default" : "outline"}
-            className={`cursor-pointer px-4 py-2 text-sm transition-all duration-300 rounded-xl ${
-              activeType === type ? "bg-gradient-warm border-0 text-primary-foreground shadow-glow" : "hover:border-primary/50"
+            className={`cursor-pointer px-5 py-2.5 text-[15px] font-semibold transition-all duration-300 rounded-full ${
+              activeType === type ? "bg-primary border-0 text-white shadow-sm" : "bg-white border-gray-200 hover:border-primary/50 text-muted-foreground"
             }`}
             onClick={() => onFilterType(type)}
           >
@@ -88,29 +88,29 @@ export function SearchFilters({
 
       {/* Expanded Filters */}
       {showFilters && (
-        <div className="flex flex-wrap gap-3 rounded-2xl glass p-5 shadow-card animate-in">
+        <div className="flex flex-wrap gap-4 rounded-3xl bg-gray-50 border border-gray-100 p-6 shadow-sm animate-in">
           <Select value={activeLocation} onValueChange={onFilterLocation}>
-            <SelectTrigger className="w-[180px] rounded-xl">
+            <SelectTrigger className="w-[180px] rounded-2xl h-12 bg-white border-gray-200 border">
               <SelectValue placeholder="Location" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Locations</SelectItem>
+            <SelectContent className="rounded-2xl">
+              <SelectItem value="all" className="rounded-xl">All Locations</SelectItem>
               {locations.map((loc) => (
-                <SelectItem key={loc} value={loc}>{loc}</SelectItem>
+                <SelectItem key={loc} value={loc} className="rounded-xl">{loc}</SelectItem>
               ))}
             </SelectContent>
           </Select>
 
           <Select value={activePrice} onValueChange={onFilterPrice}>
-            <SelectTrigger className="w-[150px] rounded-xl">
+            <SelectTrigger className="w-[150px] rounded-2xl h-12 bg-white border-gray-200 border">
               <SelectValue placeholder="Price" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Any Price</SelectItem>
-              <SelectItem value="free">Free Adoption</SelectItem>
-              <SelectItem value="under100">Under ₹8,000</SelectItem>
-              <SelectItem value="under300">Under ₹25,000</SelectItem>
-              <SelectItem value="over300">₹25,000+</SelectItem>
+            <SelectContent className="rounded-2xl">
+              <SelectItem value="all" className="rounded-xl">Any Price</SelectItem>
+              <SelectItem value="free" className="rounded-xl">Free Adoption</SelectItem>
+              <SelectItem value="under100" className="rounded-xl">Under ₹8,000</SelectItem>
+              <SelectItem value="under300" className="rounded-xl">Under ₹25,000</SelectItem>
+              <SelectItem value="over300" className="rounded-xl">₹25,000+</SelectItem>
             </SelectContent>
           </Select>
 
@@ -118,7 +118,7 @@ export function SearchFilters({
             <Button
               variant="ghost"
               size="sm"
-              className="rounded-xl text-destructive hover:bg-destructive/10"
+              className="rounded-full text-destructive hover:bg-destructive/10 h-12 px-6 ml-auto"
               onClick={() => {
                 onFilterType("");
                 onFilterBreed("");
@@ -126,7 +126,7 @@ export function SearchFilters({
                 onFilterPrice("all");
               }}
             >
-              <X className="mr-1 h-3 w-3" /> Clear All
+              <X className="mr-2 h-4 w-4" /> Clear All
             </Button>
           )}
         </div>

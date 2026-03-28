@@ -42,28 +42,7 @@ export const mockPets: Pet[] = [
     isFeatured: true,
     createdAt: "2024-03-01",
   },
-  {
-    id: "2",
-    name: "Whiskers",
-    type: "cat",
-    breed: "Persian",
-    age: "1 year",
-    gender: "female",
-    vaccinated: true,
-    price: 12500,
-    location: "Los Angeles, CA",
-    description: "Whiskers is a gorgeous Persian cat with beautiful blue eyes. She's very calm, loves to cuddle, and is perfect for apartment living. She's litter trained and great with children.",
-    images: [
-      "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=600",
-      "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=600",
-    ],
-    ownerId: "u2",
-    ownerName: "Mike Chen",
-    ownerAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100",
-    isLive: false,
-    isFeatured: true,
-    createdAt: "2024-03-05",
-  },
+
   {
     id: "3",
     name: "Rocky",
@@ -124,7 +103,7 @@ export const mockPets: Pet[] = [
     ownerName: "Lisa Park",
     ownerAvatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100",
     isLive: false,
-    isFeatured: true,
+    isFeatured: false,
     createdAt: "2024-03-12",
   },
 
@@ -167,7 +146,7 @@ export const mockPets: Pet[] = [
     ownerName: "Emily Davis",
     ownerAvatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100",
     isLive: false,
-    isFeatured: true,
+    isFeatured: false,
     createdAt: "2024-03-16",
   },
 ];

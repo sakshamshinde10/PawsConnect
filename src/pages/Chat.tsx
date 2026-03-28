@@ -160,12 +160,12 @@ const Chat = () => {
     return (
       <div className="flex min-h-screen flex-col">
         <Header />
-        <main className="flex-1 flex items-center justify-center bg-gradient-hero">
-          <div className="text-center space-y-4 animate-in fade-in p-8 glass rounded-3xl max-w-md">
-            <PawPrint className="h-16 w-16 text-primary mx-auto" />
-            <h2 className="font-heading text-2xl font-bold">Sign in to Chat</h2>
-            <p className="text-muted-foreground">You need to be signed in to message pet owners.</p>
-            <Button className="rounded-xl bg-gradient-warm border-0 shadow-glow" asChild>
+        <main className="flex-1 flex items-center justify-center bg-gray-50">
+          <div className="text-center space-y-4 animate-in fade-in p-8 bg-white border border-gray-100 shadow-sm rounded-[40px] max-w-md">
+            <PawPrint className="h-16 w-16 text-primary mx-auto opacity-80" />
+            <h2 className="font-heading text-3xl font-extrabold text-primary tracking-tight">Sign in to Chat</h2>
+            <p className="text-muted-foreground text-lg">You need to be signed in to message pet owners.</p>
+            <Button className="rounded-full bg-primary hover:bg-primary/90 text-white shadow-sm font-semibold h-12 px-8 mt-2" asChild>
               <Link to="/login">Sign In</Link>
             </Button>
           </div>
@@ -188,27 +188,27 @@ const Chat = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 flex flex-col bg-gradient-hero">
+      <main className="flex-1 flex flex-col bg-gray-50">
         {/* Chat Header */}
-        <div className="border-b glass sticky top-16 z-40">
+        <div className="bg-white border-b border-gray-100 sticky top-16 z-40 shadow-sm">
           <div className="container max-w-3xl flex items-center gap-4 py-3">
-            <Button variant="ghost" size="icon" className="rounded-xl flex-shrink-0" asChild>
+            <Button variant="ghost" size="icon" className="rounded-full flex-shrink-0 hover:bg-gray-50 text-primary" asChild>
               <Link to={petId ? `/pet/${petId}` : "/pets"}>
                 <ArrowLeft className="h-5 w-5" />
               </Link>
             </Button>
 
-            <Avatar className="h-10 w-10 ring-2 ring-primary/20 flex-shrink-0">
+            <Avatar className="h-10 w-10 ring-2 ring-secondary flex-shrink-0 shadow-sm">
               <AvatarImage src={partner?.avatar_url || ""} />
-              <AvatarFallback className="bg-gradient-warm text-primary-foreground font-bold text-sm">
+              <AvatarFallback className="bg-primary text-white font-bold text-sm">
                 {(partner?.full_name?.[0] || "?").toUpperCase()}
               </AvatarFallback>
             </Avatar>
 
             <div className="min-w-0 flex-1">
-              <p className="font-heading font-bold text-sm truncate">{partner?.full_name || "Pet Owner"}</p>
-              <p className="text-xs text-muted-foreground truncate">
-                Discussing adoption of <span className="text-primary font-medium">{petName}</span>
+              <p className="font-heading font-extrabold text-base truncate text-primary">{partner?.full_name || "Pet Owner"}</p>
+              <p className="text-[13px] text-muted-foreground truncate font-medium mt-0.5">
+                Discussing adoption of <span className="text-accent font-bold">{petName}</span>
               </p>
             </div>
           </div>
@@ -238,10 +238,10 @@ const Chat = () => {
                   <div key={msg.id} className={`flex ${isOwn ? "justify-end" : "justify-start"}`}>
                     <div className={`max-w-[75%] animate-in fade-in ${isOwn ? "slide-in-from-right-2" : "slide-in-from-left-2"}`}>
                       <div
-                        className={`px-4 py-3 rounded-2xl text-sm leading-relaxed shadow-sm ${
+                        className={`px-5 py-3 rounded-3xl text-[15px] font-medium leading-relaxed shadow-sm max-w-prose ${
                           isOwn
-                            ? "bg-gradient-warm text-white rounded-br-md"
-                            : "glass border border-white/30 rounded-bl-md"
+                            ? "bg-primary text-white rounded-br-sm"
+                            : "bg-white border border-gray-100 rounded-bl-sm text-gray-800"
                         }`}
                       >
                         {msg.content}
@@ -260,27 +260,27 @@ const Chat = () => {
         </div>
 
         {/* Message Input */}
-        <div className="border-t glass sticky bottom-0">
-          <div className="container max-w-3xl py-3">
+        <div className="bg-white border-t border-gray-100 sticky bottom-0 z-40 p-2 sm:p-4">
+          <div className="container max-w-3xl">
             <form onSubmit={handleSend} className="flex gap-3 items-center">
               <Input
                 ref={inputRef}
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Type your message..."
-                className="flex-1 h-12 rounded-2xl bg-background/80 border-white/30 focus-visible:ring-primary/30"
+                className="flex-1 h-14 rounded-full bg-gray-50 border-gray-200 focus-visible:ring-1 focus-visible:ring-primary/30 px-6 shadow-sm text-[15px]"
                 disabled={sending}
                 autoFocus
               />
               <Button
                 type="submit"
                 disabled={sending || !newMessage.trim()}
-                className="h-12 w-12 rounded-2xl bg-gradient-warm border-0 shadow-glow hover:opacity-90 transition-all hover:scale-105 flex-shrink-0"
+                className="h-14 w-14 rounded-full bg-primary hover:bg-primary/90 text-white shadow-sm border-0 transition-all hover:scale-105 flex-shrink-0"
               >
                 {sending ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
                 ) : (
-                  <Send className="h-5 w-5" />
+                  <Send className="h-5 w-5 ml-1" />
                 )}
               </Button>
             </form>

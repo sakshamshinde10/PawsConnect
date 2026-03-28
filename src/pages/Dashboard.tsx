@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { PawPrint, Plus, MapPin, Loader2, Trash2, Eye, PenLine } from "lucide-react";
+import { PawPrint, Plus, MapPin, Loader2, Trash2, Eye, CheckCircle2, RefreshCw } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -57,16 +57,30 @@ const Dashboard = () => {
     }
   };
 
+  const handleToggleStatus = async (petId: string, currentStatus: boolean) => {
+    const newStatus = !currentStatus;
+    const { error } = await supabase
+      .from("pets")
+      .update({ is_available: newStatus })
+      .eq("id", petId);
+      
+    if (!error) {
+      setPets((prev) => 
+        prev.map((p) => p.id === petId ? { ...p, is_available: newStatus } : p)
+      );
+    }
+  };
+
   if (!user) {
     return (
       <div className="flex min-h-screen flex-col">
         <Header />
-        <main className="flex-1 flex items-center justify-center bg-gradient-hero">
-          <div className="text-center space-y-4 p-8 glass rounded-3xl max-w-md animate-in fade-in">
-            <PawPrint className="h-16 w-16 text-primary mx-auto" />
-            <h2 className="font-heading text-2xl font-bold">Sign in Required</h2>
-            <p className="text-muted-foreground">Sign in to view your dashboard and listed pets.</p>
-            <Button className="rounded-xl bg-gradient-warm border-0 shadow-glow" asChild>
+        <main className="flex-1 flex items-center justify-center bg-gray-50">
+          <div className="text-center space-y-4 p-8 bg-white border border-gray-100 shadow-sm rounded-3xl max-w-md animate-in fade-in">
+            <PawPrint className="h-16 w-16 text-primary mx-auto opacity-80" />
+            <h2 className="font-heading text-3xl font-extrabold text-primary tracking-tight">Sign in Required</h2>
+            <p className="text-muted-foreground text-lg">Sign in to view your dashboard and listed pets.</p>
+            <Button className="rounded-full bg-primary hover:bg-primary/90 text-white shadow-sm h-12 px-8 font-semibold mt-2" asChild>
               <Link to="/login">Sign In</Link>
             </Button>
           </div>
@@ -79,25 +93,25 @@ const Dashboard = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 bg-gradient-hero">
+      <main className="flex-1 bg-gray-50">
         <div className="container py-10 max-w-5xl">
           {/* Profile Header */}
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-10 animate-in fade-in">
             <Avatar className="h-20 w-20 ring-4 ring-primary/10 ring-offset-4 ring-offset-background">
               <AvatarImage src={profile?.avatar_url || ""} />
-              <AvatarFallback className="bg-gradient-warm text-primary-foreground font-bold text-2xl">
+              <AvatarFallback className="bg-primary text-white font-bold text-2xl">
                 {(profile?.full_name?.[0] || user.email?.[0] || "U").toUpperCase()}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1">
-              <h1 className="font-heading text-3xl md:text-4xl font-bold">
-                Welcome, <span className="text-gradient-warm">{profile?.full_name || user.email?.split("@")[0]}</span>
+              <h1 className="font-heading text-4xl md:text-5xl font-extrabold text-primary tracking-tight">
+                Welcome, {profile?.full_name || user.email?.split("@")[0]}
               </h1>
-              <p className="text-muted-foreground mt-1">{user.email}</p>
+              <p className="text-muted-foreground mt-2 text-lg">{user.email}</p>
             </div>
-            <Button className="rounded-xl bg-gradient-warm border-0 shadow-glow font-heading font-bold" asChild>
+            <Button className="rounded-full bg-primary hover:bg-primary/90 text-white shadow-sm font-heading font-bold px-6 py-6" asChild>
               <Link to="/list-pet">
-                <Plus className="h-4 w-4 mr-2" /> List New Pet
+                <Plus className="h-5 w-5 mr-2" /> List New Pet
               </Link>
             </Button>
           </div>
@@ -110,9 +124,9 @@ const Dashboard = () => {
               { label: "Dogs", value: pets.filter(p => p.type === "dog").length, color: "text-amber-500" },
               { label: "Cats", value: pets.filter(p => p.type === "cat").length, color: "text-purple-500" },
             ].map((stat) => (
-              <div key={stat.label} className="glass rounded-2xl p-5 text-center border border-white/30 hover:shadow-card transition-shadow">
-                <p className={`font-heading text-3xl font-black ${stat.color}`}>{stat.value}</p>
-                <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
+              <div key={stat.label} className="bg-white rounded-3xl p-6 text-center border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                <p className={`font-heading text-4xl font-extrabold ${stat.color}`}>{stat.value}</p>
+                <p className="text-sm text-muted-foreground mt-2 font-medium">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -127,13 +141,15 @@ const Dashboard = () => {
                 <span className="ml-3 text-muted-foreground">Loading your pets...</span>
               </div>
             ) : pets.length === 0 ? (
-              <div className="text-center py-20 glass rounded-3xl border border-white/20 animate-in fade-in">
-                <PawPrint className="h-16 w-16 text-primary/30 mx-auto mb-4" />
-                <h3 className="font-heading text-xl font-bold">No Pets Listed Yet</h3>
-                <p className="text-muted-foreground mt-2 mb-6">Start by listing your first pet for adoption!</p>
-                <Button className="rounded-xl bg-gradient-warm border-0 shadow-glow" asChild>
+              <div className="text-center py-20 bg-white shadow-sm rounded-[40px] border border-gray-100 animate-in fade-in">
+                <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-secondary/50">
+                  <PawPrint className="h-12 w-12 text-primary opacity-60" />
+                </div>
+                <h3 className="font-heading text-2xl font-extrabold text-primary">No Pets Listed Yet</h3>
+                <p className="text-muted-foreground mt-2 mb-8 text-lg">Start by listing your first pet for adoption!</p>
+                <Button className="rounded-full bg-primary hover:bg-primary/90 text-white shadow-sm h-12 px-8 font-semibold" asChild>
                   <Link to="/list-pet">
-                    <Plus className="h-4 w-4 mr-2" /> List Your First Pet
+                    <Plus className="h-5 w-5 mr-2" /> List Your First Pet
                   </Link>
                 </Button>
               </div>
@@ -142,7 +158,7 @@ const Dashboard = () => {
                 {pets.map((pet, i) => (
                   <Card
                     key={pet.id}
-                    className="glass rounded-2xl border border-white/20 hover:shadow-card transition-all duration-300 overflow-hidden animate-in fade-in"
+                    className="bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden animate-in fade-in"
                     style={{ animationDelay: `${i * 80}ms` }}
                   >
                     <CardContent className="p-0">
@@ -180,19 +196,31 @@ const Dashboard = () => {
                             </div>
                           </div>
 
-                          <div className="flex gap-2 mt-4">
-                            <Button variant="outline" size="sm" className="rounded-lg text-xs" asChild>
+                          <div className="flex flex-wrap gap-3 mt-6">
+                            <Button variant="outline" size="sm" className="rounded-full text-sm px-5 h-10 border-gray-200" asChild>
                               <Link to={`/pet/${pet.id}`}>
-                                <Eye className="h-3 w-3 mr-1" /> View
+                                <Eye className="h-4 w-4 mr-2" /> View
                               </Link>
                             </Button>
                             <Button
                               variant="outline"
                               size="sm"
-                              className="rounded-lg text-xs text-destructive border-destructive/20 hover:bg-destructive/10"
+                              className="rounded-full text-sm px-5 h-10 text-destructive border-destructive/20 hover:bg-destructive/10"
                               onClick={() => handleDelete(pet.id)}
                             >
-                              <Trash2 className="h-3 w-3 mr-1" /> Delete
+                              <Trash2 className="h-4 w-4 mr-2" /> Delete
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className={`rounded-full text-sm px-5 h-10 ${pet.is_available ? "text-green-600 border-green-600/20 hover:bg-green-600/10" : "text-amber-600 border-amber-600/20 hover:bg-amber-600/10"}`}
+                              onClick={() => handleToggleStatus(pet.id, pet.is_available)}
+                            >
+                              {pet.is_available ? (
+                                <><CheckCircle2 className="h-4 w-4 mr-2" /> Mark Adopted</>
+                              ) : (
+                                <><RefreshCw className="h-4 w-4 mr-2" /> Mark Available</>
+                              )}
                             </Button>
                           </div>
                         </div>

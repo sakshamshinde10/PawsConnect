@@ -13,7 +13,10 @@ export function PetCard({ pet }: PetCardProps) {
   const [liked, setLiked] = useState(false);
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl bg-card shadow-card transition-all duration-500 hover:shadow-card-hover hover:-translate-y-2">
+    <Link
+      to={`/pet/${pet.id}`}
+      className="group relative overflow-hidden rounded-3xl bg-white border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-2 flex flex-col h-full cursor-pointer"
+    >
       {/* Image */}
       <div className="relative aspect-[4/3] overflow-hidden">
         <img
@@ -47,6 +50,7 @@ export function PetCard({ pet }: PetCardProps) {
           className="absolute right-3 top-3 h-10 w-10 rounded-full glass shadow-lg hover:scale-110 transition-transform"
           onClick={(e) => {
             e.preventDefault();
+            e.stopPropagation();
             setLiked(!liked);
           }}
         >
@@ -65,7 +69,7 @@ export function PetCard({ pet }: PetCardProps) {
       </div>
 
       {/* Content */}
-      <div className="p-4 space-y-3">
+      <div className="p-5 space-y-3 flex-1 flex flex-col justify-between bg-white">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
@@ -86,15 +90,15 @@ export function PetCard({ pet }: PetCardProps) {
                 <Shield className="mr-1 h-3 w-3" /> Vaccinated
               </Badge>
             )}
-            <Badge variant="outline" className="text-xs rounded-lg capitalize">
+            <Badge variant="outline" className="text-xs rounded-lg capitalize border-gray-200">
               {pet.gender}
             </Badge>
           </div>
-          <Button size="sm" className="rounded-xl bg-gradient-warm hover:opacity-90 transition-opacity border-0 shadow-glow text-primary-foreground" asChild>
-            <Link to={`/pet/${pet.id}`}>Details</Link>
-          </Button>
+          <span className="rounded-full bg-gradient-warm text-white text-sm font-semibold px-5 py-1.5 shadow-sm transition-all group-hover:opacity-90">
+            Details →
+          </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

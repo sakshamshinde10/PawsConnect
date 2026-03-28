@@ -1,73 +1,78 @@
-# Welcome to your Lovable project
+# Happy Paws Connect 🐾
 
-## Project info
+Happy Paws Connect is a comprehensive platform designed to bridge the gap between pet owners, pet service providers, and people looking to adopt a pet. Built with a modern, high-performance tech stack, it provides seamless pet listings, a full adoption workflow, service provider registration, and real-time notifications.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Features ✨
 
-## How can I edit this code?
+- **Pet Adoption:** Browse available pets with an intuitive UI, filter by breed, and connect directly with existing owners or shelters.
+- **Service Providers:** Register as a pet service provider (e.g., dog walking, grooming, sitting). Includes a comprehensive admin approval workflow.
+- **Booking System:** Book services with real-time status updates and automated notifications.
+- **Real-time Notifications:** Keep pet owners and service providers informed about booking and adoption statuses instantly.
+- **Responsive UI:** Beautiful, responsive, and accessible design.
 
-There are several ways of editing your application.
+## Tech Stack 🛠️
 
-**Use Lovable**
+- **Frontend Framework:** React 18, TypeScript, Vite
+- **Styling & UI:** Tailwind CSS, shadcn/ui, Radix UI Primitives
+- **State Management:** TanStack React Query (`@tanstack/react-query`)
+- **Backend & Database:** Supabase (`@supabase/supabase-js`)
+- **Routing:** React Router (`react-router-dom`)
+- **Forms & Validation:** React Hook Form + Zod
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Getting Started 🚀
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+Make sure you have [Node.js](https://nodejs.org/) and npm installed.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/happy-paws-connect.git
+   cd happy-paws-connect
+   ```
 
-Follow these steps:
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+3. **Environment Setup:**
+   Create a `.env.local` file in the root directory and add your Supabase credentials and other necessary environment variables:
+   ```env
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+5. **Open your browser:**
+   Navigate to `http://localhost:5173` to see the application running.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## Available Scripts
 
-**Edit a file directly in GitHub**
+In the project directory, you can run:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- `npm run dev`: Starts the development server.
+- `npm run build`: Builds the app for production to the `dist` folder.
+- `npm run lint`: Runs ESLint to catch syntax and style issues.
+- `npm run test`: Runs the Vitest test suite.
+- `npm run preview`: Locally preview the production build.
 
-**Use GitHub Codespaces**
+## Contributing 🤝
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
 
-## What technologies are used for this project?
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-This project is built with:
+## License 📄
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -9,13 +9,20 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
-import { Camera, PawPrint, Upload, Loader2, X, Video, Square, ImagePlus, CheckCircle2 } from "lucide-react";
+import { Camera, PawPrint, Upload, Loader2, X, Video, Square, ImagePlus, CheckCircle2, Search, ChevronDown } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 
 const ListPet = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  // Force user to be logged in to view page
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
 
   // Form state
   const [petName, setPetName] = useState("");
@@ -33,6 +40,22 @@ const ListPet = () => {
   // Breed fetching
   const [breeds, setBreeds] = useState<string[]>([]);
   const [isLoadingBreeds, setIsLoadingBreeds] = useState(false);
+
+  // Breed searchable dropdown
+  const [breedSearch, setBreedSearch] = useState("");
+  const [breedDropdownOpen, setBreedDropdownOpen] = useState(false);
+  const breedDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close breed dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (breedDropdownRef.current && !breedDropdownRef.current.contains(e.target as Node)) {
+        setBreedDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   // Image upload state
   const [images, setImages] = useState<{ file: File; preview: string }[]>([]);
@@ -53,6 +76,8 @@ const ListPet = () => {
     const fetchBreeds = async () => {
       setBreeds([]);
       setBreed("");
+      setBreedSearch("");
+      setBreedDropdownOpen(false);
 
       if (petType === "dog") {
         setIsLoadingBreeds(true);
@@ -287,15 +312,15 @@ const ListPet = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="relative flex-1 bg-[#FDF9F5] py-12 overflow-hidden">
+      <main className="relative flex-1 bg-gray-50 py-12 overflow-hidden">
         <div className="container max-w-[800px] relative">
-          <Card className="bg-white/90 backdrop-blur-3xl shadow-none border border-black/5 rounded-[40px] px-2 sm:px-8 py-4 animate-in">
+          <Card className="bg-white shadow-sm border border-gray-100 rounded-[40px] px-2 sm:px-8 py-4 animate-in">
             <CardHeader className="pb-6">
-              <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#FFAD40] to-[#FF8C00] shadow-sm">
+              <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary shadow-sm">
                 <PawPrint className="h-6 w-6 text-white" />
               </div>
-              <CardTitle className="font-heading text-2xl">List Your <span className="text-gradient-warm">Pet</span></CardTitle>
-              <CardDescription>
+              <CardTitle className="font-heading text-3xl font-extrabold text-primary tracking-tight">List Your <span className="text-secondary-foreground">Pet</span></CardTitle>
+              <CardDescription className="text-base mt-2">
                 Fill in the details below to help find a loving home for your pet
               </CardDescription>
             </CardHeader>
@@ -397,13 +422,13 @@ const ListPet = () => {
                     <button
                       type="button"
                       onClick={startCamera}
-                      className="flex w-full cursor-pointer items-center gap-5 rounded-3xl border border-dashed border-[#1DB954]/40 bg-[#F4FBF7] p-6 transition-all duration-300 hover:border-[#1DB954]/60 group"
+                      className="flex w-full cursor-pointer items-center gap-5 rounded-3xl border border-dashed border-primary/30 bg-secondary/30 p-6 transition-all duration-300 hover:border-primary/60 group"
                     >
-                      <div className="flex h-[60px] w-[60px] flex-shrink-0 items-center justify-center rounded-[20px] bg-gradient-to-br from-[#FFAD40] to-[#FF8C00] shadow-sm transform transition-transform group-hover:scale-105">
+                      <div className="flex h-[60px] w-[60px] flex-shrink-0 items-center justify-center rounded-2xl bg-primary shadow-sm transform transition-transform group-hover:scale-105">
                         <Video className="h-7 w-7 text-white" strokeWidth={1.5} />
                       </div>
                       <div className="text-left">
-                        <p className="text-[15px] font-bold text-black/90">Record Live Video</p>
+                        <p className="text-[15px] font-bold text-black/90 tracking-tight">Record Live Video</p>
                         <p className="text-[13px] text-muted-foreground mt-0.5">Use your camera to record a short clip of your pet</p>
                       </div>
                     </button>
@@ -439,16 +464,78 @@ const ListPet = () => {
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading breeds...
                       </div>
                     ) : breeds.length > 0 ? (
-                      <Select onValueChange={(value) => setBreed(value)}>
-                        <SelectTrigger className="h-12 rounded-[14px] bg-white border-black/10 text-[15px] shadow-none focus:ring-1 focus:ring-primary/30">
-                          <SelectValue placeholder={`Select ${petType} breed`} />
-                        </SelectTrigger>
-                        <SelectContent className="max-h-60">
-                          {breeds.map((b) => (
-                            <SelectItem key={b} value={b}>{b}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <div ref={breedDropdownRef} className="relative">
+                        {/* Trigger button */}
+                        <button
+                          type="button"
+                          onClick={() => setBreedDropdownOpen((prev) => !prev)}
+                          className="flex h-12 w-full items-center justify-between rounded-[14px] border border-black/10 bg-white px-3 text-[15px] text-left shadow-none transition-colors hover:border-primary/40 focus:outline-none focus:ring-1 focus:ring-primary/30"
+                        >
+                          <span className={breed ? "text-black" : "text-muted-foreground"}>
+                            {breed || `Select ${petType} breed`}
+                          </span>
+                          <ChevronDown
+                            className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${breedDropdownOpen ? "rotate-180" : ""}`}
+                          />
+                        </button>
+
+                        {/* Dropdown panel */}
+                        {breedDropdownOpen && (
+                          <div className="absolute z-50 mt-1 w-full rounded-2xl border border-black/10 bg-white shadow-lg overflow-hidden animate-in fade-in slide-in-from-top-1">
+                            {/* Search input */}
+                            <div className="flex items-center gap-2 border-b border-black/8 px-3 py-2">
+                              <Search className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                              <input
+                                autoFocus
+                                type="text"
+                                placeholder="Search breed..."
+                                value={breedSearch}
+                                onChange={(e) => setBreedSearch(e.target.value)}
+                                className="w-full bg-transparent text-[14px] text-black placeholder:text-muted-foreground outline-none"
+                              />
+                              {breedSearch && (
+                                <button
+                                  type="button"
+                                  onClick={() => setBreedSearch("")}
+                                  className="text-muted-foreground hover:text-black transition-colors"
+                                >
+                                  <X className="h-3.5 w-3.5" />
+                                </button>
+                              )}
+                            </div>
+
+                            {/* Filtered breed list */}
+                            <ul className="max-h-52 overflow-y-auto py-1">
+                              {breeds
+                                .filter((b) =>
+                                  b.toLowerCase().includes(breedSearch.toLowerCase())
+                                )
+                                .map((b) => (
+                                  <li
+                                    key={b}
+                                    onClick={() => {
+                                      setBreed(b);
+                                      setBreedDropdownOpen(false);
+                                      setBreedSearch("");
+                                    }}
+                                    className={`cursor-pointer px-4 py-2 text-[14px] transition-colors hover:bg-primary/8 hover:text-primary ${
+                                      breed === b ? "bg-primary/10 text-primary font-medium" : "text-black/80"
+                                    }`}
+                                  >
+                                    {b}
+                                  </li>
+                                ))}
+                              {breeds.filter((b) =>
+                                b.toLowerCase().includes(breedSearch.toLowerCase())
+                              ).length === 0 && (
+                                <li className="px-4 py-3 text-[13px] text-muted-foreground text-center">
+                                  No breeds found
+                                </li>
+                              )}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
                     ) : (
                       <Input id="breed" placeholder="e.g. Golden Retriever" className="h-12 rounded-[14px] bg-white border-black/10 text-[15px] shadow-none focus-visible:ring-1 focus-visible:ring-primary/30" value={breed} onChange={(e) => setBreed(e.target.value)} required />
                     )}
@@ -488,9 +575,9 @@ const ListPet = () => {
                   <Textarea id="description" placeholder="Tell potential adopters about your pet's personality, habits, and needs..." rows={4} className="rounded-[14px] bg-white border-black/10 text-[15px] shadow-none focus-visible:ring-1 focus-visible:ring-primary/30" value={description} onChange={(e) => setDescription(e.target.value)} required />
                 </div>
 
-                <div className="flex items-center justify-between rounded-2xl glass p-5">
+                <div className="flex items-center justify-between rounded-3xl bg-gray-50 border border-gray-100 p-6">
                   <div>
-                    <Label className="text-base font-heading font-bold">Vaccinated</Label>
+                    <Label className="text-base font-heading font-bold text-primary">Vaccinated</Label>
                     <p className="text-sm text-muted-foreground">Is your pet fully vaccinated?</p>
                   </div>
                   <Switch checked={vaccinated} onCheckedChange={setVaccinated} />
@@ -506,7 +593,7 @@ const ListPet = () => {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full h-12 rounded-xl bg-gradient-warm hover:opacity-90 transition-opacity border-0 shadow-glow text-base font-heading font-bold"
+                  className="w-full h-14 rounded-full bg-primary hover:bg-primary/90 transition-all border-0 shadow-sm text-base font-heading font-bold mt-4"
                   size="lg"
                 >
                   {isSubmitting ? (

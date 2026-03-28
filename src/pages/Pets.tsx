@@ -113,9 +113,9 @@ const Pets = () => {
       <Header />
       <main className="flex-1">
         <div className="container py-10">
-          <div className="mb-8">
-            <h1 className="font-heading text-4xl font-bold">
-              Find Your <span className="text-gradient-warm">Pet</span>
+          <div className="mb-10 text-center md:text-left">
+            <h1 className="font-heading text-4xl md:text-5xl font-extrabold tracking-tight text-primary">
+              Find Your <span className="text-accent">Pet</span>
             </h1>
             <p className="mt-2 text-muted-foreground text-lg">
               {showBreedGrid 
@@ -140,7 +140,7 @@ const Pets = () => {
             {filterBreed && (
               <Button 
                 variant="ghost" 
-                className="mb-6 -ml-3 text-muted-foreground hover:text-foreground"
+                className="mb-8 -ml-3 text-primary hover:bg-gray-50 rounded-full px-6"
                 onClick={() => setFilterBreed("")}
               >
                 <ArrowLeft className="mr-2 h-4 w-4" /> Back to {filterType || "all"} breeds
@@ -178,7 +178,7 @@ const Pets = () => {
                         : "Try adjusting your filters"}
                     </p>
                     {filterBreed && (
-                      <Button className="mt-4 rounded-xl bg-gradient-warm border-0 shadow-glow" asChild>
+                      <Button className="mt-6 rounded-full bg-primary hover:bg-primary/90 text-white shadow-sm px-8" asChild>
                         <a href="/list-pet">List a {filterBreed}</a>
                       </Button>
                     )}

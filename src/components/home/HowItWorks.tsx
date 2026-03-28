@@ -33,16 +33,13 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden">
-      {/* Background accent */}
-      <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-muted/60 to-muted/30" />
-
+    <section className="relative py-20 md:py-28 overflow-hidden bg-gray-50 border-y border-gray-100">
       <div className="container relative">
-        <div className="mb-14 text-center">
-          <h2 className="font-heading text-3xl font-bold md:text-4xl">
-            How It <span className="text-gradient-cool">Works</span>
+        <div className="mb-16 text-center">
+          <h2 className="font-heading text-4xl font-extrabold md:text-5xl tracking-tight text-primary">
+            How It <span className="text-secondary-foreground">Works</span>
           </h2>
-          <p className="mx-auto mt-3 max-w-md text-muted-foreground">
+          <p className="mx-auto mt-4 max-w-md text-muted-foreground text-lg">
             Four simple steps to find your perfect companion
           </p>
         </div>
@@ -51,17 +48,17 @@ export function HowItWorks() {
           {steps.map((step, i) => (
             <div
               key={step.title}
-              className="group relative rounded-2xl bg-card p-6 shadow-card transition-all duration-500 hover:shadow-card-hover hover:-translate-y-2"
+              className="group relative rounded-3xl bg-white p-8 border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-2"
               style={{ animation: `fade-in 0.5s ease-out ${i * 0.1}s both` }}
             >
               {/* Step number */}
-              <div className={`absolute -top-3 -left-1 flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br ${step.gradient} font-heading text-sm font-bold text-primary-foreground shadow-glow`}>
+              <div className="absolute -top-4 -left-2 flex h-10 w-10 items-center justify-center rounded-full bg-primary font-heading text-base font-bold text-white shadow-sm ring-4 ring-white">
                 {i + 1}
               </div>
 
               {/* Icon */}
               <div className={`mb-5 flex h-16 w-16 items-center justify-center rounded-2xl ${step.bg} transition-transform duration-300 group-hover:scale-110`}>
-                <step.icon className={`h-8 w-8 bg-gradient-to-br ${step.gradient} bg-clip-text`} style={{ color: 'inherit' }} />
+                <step.icon className="h-8 w-8 text-primary" />
               </div>
 
               <h3 className="mb-2 font-heading text-lg font-bold">{step.title}</h3>
