@@ -63,15 +63,6 @@ In the project directory, you can run:
 - `npm run test`: Runs the Vitest test suite.
 - `npm run preview`: Locally preview the production build.
 
-## Contributing 🤝
-
-Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ## License 📄
 
