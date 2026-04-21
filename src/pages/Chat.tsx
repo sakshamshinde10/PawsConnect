@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams, useSearchParams, Link } from "react-router-dom";
+import { useParams, useSearchParams, Link, useNavigate } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowLeft, Send, Loader2, PawPrint } from "lucide-react";
+import { ArrowLeft, Send, Loader2, PawPrint, CheckCircle2, HeartHandshake } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -32,13 +32,86 @@ const Chat = () => {
   const petName = searchParams.get("pet") || "Pet";
 
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [partner, setPartner] = useState<ChatPartner | null>(null);
+  const [isAdopted, setIsAdopted] = useState(false);
+  const [markingAdopted, setMarkingAdopted] = useState(false);
+  const [requestingAdoption, setRequestingAdoption] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Check if current user is the pet owner
+  const isOwner = user?.id === ownerId;
+
+  // Fetch pet adoption status
+  useEffect(() => {
+    if (!petId) return;
+    supabase
+      .from("pets")
+      .select("is_available")
+      .eq("id", petId)
+      .single()
+      .then(({ data }) => {
+        if (data) setIsAdopted(!data.is_available);
+      });
+  }, [petId]);
+
+  const handleMarkAdopted = async () => {
+    if (!petId || !user) return;
+    setMarkingAdopted(true);
+    const { error } = await supabase
+      .from("pets")
+      .update({ is_available: false })
+      .eq("id", petId);
+
+    if (!error) {
+      setIsAdopted(true);
+      setShowConfirm(false);
+
+      // Send congratulations to buyer
+      const buyerId = messages.find(m => m.sender_id !== user.id)?.sender_id || ownerId;
+      if (buyerId && buyerId !== user.id) {
+        await supabase.from("messages").insert({
+          sender_id: user.id,
+          receiver_id: buyerId,
+          pet_id: petId,
+          content: `Congratulations! Your adoption request for ${petName} has been approved. 🎉`,
+        });
+      }
+
+      // Navigate to dashboard after short delay
+      setTimeout(() => navigate("/dashboard"), 1500);
+    }
+    setMarkingAdopted(false);
+  };
+
+  const handleRequestAdoption = async () => {
+    if (!petId || !user || !ownerId) return;
+    setRequestingAdoption(true);
+    
+    // Check if a request was already sent recently
+    const hasSent = messages.some(m => m.content === "SYS_ADOPTION_REQUEST" && m.sender_id === user.id);
+    
+    if (!hasSent) {
+      const { error } = await supabase.from("messages").insert({
+        sender_id: user.id,
+        receiver_id: ownerId,
+        pet_id: petId,
+        content: "SYS_ADOPTION_REQUEST",
+      });
+      if (!error) {
+        setShowConfirm(false);
+      }
+    } else {
+        setShowConfirm(false);
+    }
+    setRequestingAdoption(false);
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -209,9 +282,70 @@ const Chat = () => {
               <p className="font-heading font-extrabold text-base truncate text-primary">{partner?.full_name || "Pet Owner"}</p>
               <p className="text-[13px] text-muted-foreground truncate font-medium mt-0.5">
                 Discussing adoption of <span className="text-accent font-bold">{petName}</span>
+                {isAdopted && <span className="ml-2 text-green-600 font-bold">· Adopted ✓</span>}
               </p>
             </div>
+
+            {/* Request Adopt */}
+            {!isAdopted && !isOwner && (
+              <Button
+                size="sm"
+                className="flex-shrink-0 rounded-full bg-green-500 hover:bg-green-600 text-white text-xs font-bold px-4 h-9 shadow-sm gap-1.5 transition-all hover:-translate-y-0.5"
+                onClick={() => setShowConfirm(true)}
+              >
+                <HeartHandshake className="h-4 w-4" />
+                <span className="hidden sm:inline">Adopt</span>
+              </Button>
+            )}
+
+            {isAdopted && (
+              <div className="flex-shrink-0 flex items-center gap-1.5 text-green-600 text-xs font-bold bg-green-50 border border-green-200 rounded-full px-3 py-1.5">
+                <CheckCircle2 className="h-4 w-4" />
+                <span className="hidden sm:inline">Adopted!</span>
+              </div>
+            )}
           </div>
+
+          {/* Confirmation Banner */}
+          {showConfirm && (
+            <div className="bg-amber-50 border-t border-amber-200 px-4 py-3">
+              <div className="container max-w-3xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div>
+                  <p className="font-semibold text-amber-800 text-sm">
+                    {isOwner ? "🐾 Confirm Adoption" : "🐾 Request Adoption"}
+                  </p>
+                  <p className="text-amber-700 text-xs mt-0.5">
+                    {isOwner 
+                      ? `This will remove ${petName} from all listings. This cannot be undone easily.` 
+                      : `This will notify the owner that you are ready to adopt ${petName}.`}
+                  </p>
+                </div>
+                <div className="flex gap-2 flex-shrink-0">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="rounded-full h-8 px-4 text-xs border-amber-300 text-amber-700 hover:bg-amber-100"
+                    onClick={() => setShowConfirm(false)}
+                    disabled={markingAdopted || requestingAdoption}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="rounded-full h-8 px-4 text-xs bg-green-500 hover:bg-green-600 text-white font-bold gap-1"
+                    onClick={isOwner ? handleMarkAdopted : handleRequestAdoption}
+                    disabled={markingAdopted || requestingAdoption}
+                  >
+                    {(markingAdopted || requestingAdoption) ? (
+                      <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Processing...</>
+                    ) : (
+                      <><CheckCircle2 className="h-3.5 w-3.5" /> {isOwner ? "Yes, Mark Adopted" : "Yes, Request Adoption"}</>
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Messages Area */}
@@ -234,6 +368,43 @@ const Chat = () => {
             ) : (
               messages.map((msg) => {
                 const isOwn = msg.sender_id === user.id;
+                const isSystemMessage = msg.content === "SYS_ADOPTION_REQUEST";
+                
+                if (isSystemMessage) {
+                  return (
+                    <div key={msg.id} className="my-6 flex justify-center animate-in fade-in slide-in-from-bottom-2">
+                       <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 max-w-sm text-center shadow-sm">
+                         <PawPrint className="h-6 w-6 text-amber-500 mx-auto mb-2" />
+                         {isOwn ? (
+                           <p className="text-amber-800 text-sm font-medium">
+                             You have sent a request to adopt {petName}. Waiting for the owner to confirm!
+                           </p>
+                         ) : (
+                           <div>
+                             <p className="text-amber-800 text-sm font-medium mb-3">
+                               {partner?.full_name || "This user"} wants to adopt {petName}!
+                             </p>
+                             {!isAdopted && (
+                               <Button 
+                                 size="sm" 
+                                 className="w-full bg-green-500 hover:bg-green-600 text-white font-bold rounded-full shadow-sm"
+                                 onClick={handleMarkAdopted}
+                                 disabled={markingAdopted}
+                               >
+                                 {markingAdopted ? (
+                                    <><Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> Confirming...</>
+                                 ) : (
+                                    <><CheckCircle2 className="mr-1.5 h-4 w-4" /> Confirm Adoption</>
+                                 )}
+                               </Button>
+                             )}
+                           </div>
+                         )}
+                       </div>
+                    </div>
+                  );
+                }
+
                 return (
                   <div key={msg.id} className={`flex ${isOwn ? "justify-end" : "justify-start"}`}>
                     <div className={`max-w-[75%] animate-in fade-in ${isOwn ? "slide-in-from-right-2" : "slide-in-from-left-2"}`}>
